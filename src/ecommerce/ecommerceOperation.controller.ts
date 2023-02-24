@@ -1,7 +1,7 @@
 import { Controller, Post, Get, Body, Param, Req, Delete} from "@nestjs/common";
 import { EComService } from "./ecommerce.service";
 import { AuthenticateUser } from '../common/middleware/authenticate.middleware';
-import {ApiHeader, ApiBody, ApiQuery, ApiExtraModels, ApiProperty} from '@nestjs/swagger'
+import {ApiHeader, ApiBody, ApiQuery, ApiExtraModels, ApiProperty, ApiOperation} from '@nestjs/swagger'
 
 @ApiExtraModels()
 class OrderModel {
@@ -22,6 +22,7 @@ export class EComOperationController {
 
     @Post('/order')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     @ApiBody({ type: OrderModel })
     async orderProduct(@Body('address') address: string, @Body('pin') pin: string, @Req() req: any){
         const orderId = await this.EComService.orderProduct(req.user.id, req.user.email, address, pin)
@@ -33,6 +34,7 @@ export class EComOperationController {
 
     @Post(':id')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     async addToCart(@Param('id') id: string, @Req() req: any){
         const cart = await this.EComService.addToCart(id, req.user)
         return {
@@ -43,6 +45,7 @@ export class EComOperationController {
 
     @Get()
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     async getCart(@Req() req: any){
         const cart = await this.EComService.getUserCart(req.user.id)
         return {
@@ -53,6 +56,7 @@ export class EComOperationController {
 
     @Delete('cancel/:id')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     async cancelOrder(@Param('id') id: string, @Req() req: any){
         await this.EComService.cancelOrder(id, req.user.id);
         return {

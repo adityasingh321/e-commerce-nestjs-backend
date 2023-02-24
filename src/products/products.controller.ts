@@ -2,7 +2,7 @@ import { Controller, Post, Get, Body, Param, Patch, Delete, Req, UseGuards } fro
 import { ProductService } from "./products.service";
 import {checkAdmin} from '../guards/role.guard'
 import { ValidateToken } from "src/guards/validateToken.guard";
-import {ApiHeader, ApiBody, ApiQuery, ApiExtraModels, ApiProperty} from '@nestjs/swagger'
+import {ApiHeader, ApiBody, ApiQuery, ApiExtraModels, ApiProperty, ApiOperation} from '@nestjs/swagger'
 
 
 @ApiExtraModels()
@@ -27,19 +27,21 @@ export class ProductController {
 
     @Post()
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     @ApiBody({ type: AddProductModel })
     @UseGuards(checkAdmin)
     async addProduct(@Body('name') name: string, @Body('desc') prodDesc: string,@Body('price') prodPrice: number, @Req() req: any) {
-        const generatedId = await this.productService.insertProduct(name, prodDesc, prodPrice)
+        const product = await this.productService.insertProduct(name, prodDesc, prodPrice)
         
         return {
             success: true,
-            productId: generatedId
+            product: product
         }
     }
 
     @Get()
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     async getAllProducts(){
         const allProducts = await this.productService.getProducts()
         return allProducts;
@@ -47,6 +49,7 @@ export class ProductController {
 
     @Get(':id')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     async getProduct(@Param('id') prodId: string){
         const product = await this.productService.getSingleProduct(prodId)
         return product;
@@ -54,6 +57,7 @@ export class ProductController {
 
     @Patch(':id')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     @ApiBody({ type: AddProductModel })
     @UseGuards(ValidateToken)
     @UseGuards(checkAdmin)
@@ -67,9 +71,12 @@ export class ProductController {
 
     @Delete(':id')
     @ApiHeader({name:'token'})
+    @ApiOperation({ summary: 'wrote test cases and passed✅' })
     @UseGuards(checkAdmin)
     async removeProduct(@Param('id') prodId: string, @Req() req: any){
-        const deletedProduct = await this.productService.deleteProduct(prodId, req.user.id)        
+        const deletedProduct = await this.productService.deleteProduct(prodId, req.user.id)
+        console.log(deletedProduct);
+                
         return {
             success: true,
             message: `item deleted succesfully`

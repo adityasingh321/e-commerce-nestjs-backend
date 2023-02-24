@@ -7,7 +7,7 @@ dotenv.config();
 @Injectable()
 export class AuthenticateUser implements NestMiddleware{
     use(req: Request, res: Response, next: NextFunction) {
-        let token = req.headers.token ? req.headers.token : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZTQ5MjM2ZjM3MWVkNjQ5NDI1ZTc0OCIsImVtYWlsIjoiYWRpQGdtYWlsLmNvbSIsInVzZXJSb2xlIjoiY3VzdG9tZXIiLCJpYXQiOjE2NzYyNjE4NjZ9.BcMIWmShwmMjRNUp47B9aNS86SJTqaxGbFo7NG9y-0g';
+        let token = req.headers.token ? req.headers.token : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZjMxMTJjMGNjZGM4MDUyZDM5YjdlNyIsImVtYWlsIjoibmUxMXdAZ21haWwuY29tIiwidXNlclJvbGUiOiJjdXN0b21lciIsImlhdCI6MTY3Njg3NDA1MH0.iyyaBVQklQnZKgVNpPbe0_ebi08jtBp9yzDfvvA97NE';
         
         let payload
         

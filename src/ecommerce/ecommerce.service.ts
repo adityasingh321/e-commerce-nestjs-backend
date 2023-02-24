@@ -48,8 +48,12 @@ export class EComService{
     }
 
     async addToCart(prodId: string, user: any){
-        const foundUser = await this.userModel.findById(user.id)
-        const foundProduct = await this.productModel.findById(prodId)
+        const foundUser = await this.userModel.findById(user.id).catch((error) => {
+            throw new BadRequestException(error.message)
+        })
+        const foundProduct = await this.productModel.findById(prodId).catch((error) => {
+            throw new BadRequestException(error.message)
+        })
         foundUser.cart.push(foundProduct)
         await foundUser.save()
         console.log(foundUser.cart.length);
@@ -58,7 +62,12 @@ export class EComService{
     }
 
     async orderProduct(userId: string, email: string, address: string, pin: string){
-        const user = await this.userModel.findById(userId)
+        if(!address || !pin){
+            throw new BadRequestException("All the fields are required")
+        }
+        const user = await this.userModel.findById(userId).catch((error) => {
+            throw new BadRequestException(error.message)
+        })
         const cart = [...user.cart]
         console.log(cart);
         
@@ -76,7 +85,9 @@ export class EComService{
     }
 
     async cancelOrder(id: string, userId: string){
-        const order = await this.orderedItemModel.findByIdAndDelete(id)
+        const order = await this.orderedItemModel.findByIdAndDelete(id).catch((error) => {
+            throw new BadRequestException(error.message)
+        })
         sendEmail(id, null, null, null)
 
     }

@@ -13,10 +13,14 @@ export class ProductService{
 
     async insertProduct(name: string, desc: string, price: number){
 
+        if(!name || !desc || !price){
+            throw new BadRequestException("All the fields are required")
+        }
+
         const newProduct = new this.productModel({name: name, desc: desc, price: price})
         const result = await newProduct.save()
         
-        return result._id
+        return result
     }
 
     async getProducts(){
@@ -28,7 +32,7 @@ export class ProductService{
     }
 
     async getSingleProduct(productId: string){
-        const product = await this.productModel.findById(productId).exec().catch((error) => {
+        const product = await this.productModel.findById(productId).catch((error) => {
             throw new BadRequestException(error.message)
         })
         
@@ -41,7 +45,10 @@ export class ProductService{
     async updateProduct(productId: string, name: string, desc: string, price: number){
 
         // const [product, index] = this.findProduct(productId)
-        const update = await this.productModel.findById(productId)
+        const update = await this.productModel.findById(productId).catch((error) => {
+            throw new BadRequestException(error.message)
+        })
+        
 
         if(name){
             update.name = name;
@@ -66,7 +73,11 @@ export class ProductService{
     }
 
     async deleteProduct(prodId: string, userId: string){
-        const deletedProduct = await this.productModel.findByIdAndDelete(prodId)
+        const deletedProduct = await this.productModel.findByIdAndDelete(prodId).catch((error) => {
+            
+            throw new BadRequestException(error.message)
+        })
+        
         
         return deletedProduct
 
